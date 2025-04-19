@@ -1,0 +1,130 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String        @id @default(uuid())
+  name          String
+  email         String        @unique
+  password      String
+  image         String?
+  bio           String?
+  role          Role          @default(USER)
+  posts         Post[]
+  comments      Comment[]
+  createdEvents Event[]       @relation("EventOrganizer")
+  registrations Registration[] // Usuario puede registrarse en eventos
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+model Post {
+  id          String    @id @default(uuid())
+  title       String
+  content     String
+  published   Boolean   @default(false)
+  author      User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId    String
+  categories  Category[]
+  comments    Comment[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  content   String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    String
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Category {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  posts     Post[]
+  events    Event[]  // Categorías también para eventos
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Modelo para tipos de eventos
+model EventType {
+  id     String  @id @default(uuid())
+  name   String  @unique
+  events Event[]
+}
+
+// Modelo para eventos culturales
+model Event {
+  id               String         @id @default(uuid())
+  title            String
+  description      String
+  imageUrl         String?
+  startDate        DateTime
+  endDate          DateTime?
+  time             String?
+  location         String
+  address          String?
+  city             String
+  capacity         Int?
+  price            Float?
+  organizer        User           @relation("EventOrganizer", fields: [organizerId], references: [id])
+  organizerId      String
+  contactEmail     String?
+  contactPhone     String?
+  additionalInfo   String?
+  published        Boolean        @default(false) // Si el evento está publicado en el inicio
+  allowRegistration Boolean       @default(false) // Si se permite el registro de participantes
+  categories       Category[]
+  registrations    Registration[] // Registros de participantes
+  eventType        EventType      @relation(fields: [eventTypeId], references: [id])
+  eventTypeId      String
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+}
+
+// Modelo para registros de participantes en eventos
+model Registration {
+  id           String           @id @default(uuid())
+  event        Event            @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  eventId      String
+  user         User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       String
+  status       RegistrationStatus @default(PENDING)
+  name         String
+  email        String
+  phone        String?
+  age          Int?
+  city         String?
+  experience   String?
+  teamName     String?
+  teamMembers  String?          // Miembros del equipo, separados por comas
+  notes        String?
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+
+  @@unique([userId, eventId])
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum RegistrationStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
