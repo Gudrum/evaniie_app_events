@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EventForm } from "@/components/dashboard/EventForm";
 import { EventList } from "@/components/dashboard/EventList";
 import { ParticipantsList } from "@/components/dashboard/ParticipantsList";
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeft, PlusCircle } from 'lucide-react';
 
 export default function EventDashboard() {
   const router = useRouter();
@@ -55,8 +55,11 @@ export default function EventDashboard() {
   const handleNewEvent = useCallback(() => {
     console.log("Cambiando a pestaña de creación");
     setActiveTab("create");
-    // Actualizamos también la URL
-    router.push('/dashboard?tab=create');
+
+    // Forzamos la actualización del estado y la URL
+    setTimeout(() => {
+      router.push('/dashboard?tab=create');
+    }, 0);
   }, [router]);
 
   // Función para manejar creación exitosa de evento
@@ -77,6 +80,12 @@ export default function EventDashboard() {
     router.push('/dashboard?tab=participants');
   };
 
+  // Función para cambiar directamente a la pestaña de pestañas
+  const changeTab = (tab: string) => {
+    setActiveTab(tab);
+    router.push(`/dashboard?tab=${tab}`);
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
       <header className="sticky top-0 z-50 w-full bg-white/80 dark:bg-zinc-950/80 backdrop-blur-lg border-b border-zinc-200 dark:border-zinc-800">
@@ -90,9 +99,11 @@ export default function EventDashboard() {
           </div>
           <div className="flex items-center gap-4">
             <Button
-              onClick={handleNewEvent}
-              className="bg-primary hover:bg-primary/90"
+              variant="default"
+              onClick={() => changeTab("create")}
+              className="bg-primary hover:bg-primary/90 gap-2"
             >
+              <PlusCircle className="h-4 w-4" />
               Crear Evento
             </Button>
           </div>
@@ -100,10 +111,11 @@ export default function EventDashboard() {
       </header>
 
       <main className="flex-1 container mx-auto pt-8 pb-10 px-4 sm:px-6">
-        <Tabs defaultValue="overview" value={activeTab} onValueChange={(value) => {
-          setActiveTab(value);
-          router.push(`/dashboard?tab=${value}`);
-        }} className="space-y-6">
+        <Tabs
+          value={activeTab}
+          onValueChange={changeTab}
+          className="space-y-6"
+        >
           <TabsList className="bg-muted/50 p-1 rounded-xl">
             <TabsTrigger value="overview" className="rounded-lg">
               Resumen
@@ -208,10 +220,7 @@ export default function EventDashboard() {
                   </div>
                   <Button
                     variant="outline"
-                    onClick={() => {
-                      setActiveTab("events");
-                      router.push('/dashboard?tab=events');
-                    }}
+                    onClick={() => changeTab("events")}
                   >
                     Volver a Eventos
                   </Button>
