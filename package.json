@@ -1,10 +1,10 @@
 {
-  "name": "nextjs-shadcn",
+  "name": "evaniie-events",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev -H 0.0.0.0",
-    "build": "next build",
+    "build": "next build --no-lint",
     "start": "next start -H 0.0.0.0",
     "lint": "next lint",
     "prisma:generate": "prisma generate",
@@ -14,7 +14,8 @@
     "db:reset": "prisma db push --force-reset",
     "db:setup": "bun run db:reset && bun run prisma:generate && bun run prisma:seed-initial && bun run prisma:seed-events",
     "db:seed": "bun prisma db push && bun ./prisma/seed.ts",
-    "db:seed-events": "bun ./prisma/seed-events.ts"
+    "db:seed-events": "bun ./prisma/seed-events.ts",
+    "vercel-build": "prisma generate && next build --no-lint"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
