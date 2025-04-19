@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -12,6 +12,7 @@ import { ParticipantsList } from "@/components/dashboard/ParticipantsList";
 import { ChevronLeft } from 'lucide-react';
 
 export default function EventDashboard() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const tabParam = searchParams.get('tab');
 
@@ -51,9 +52,12 @@ export default function EventDashboard() {
   }, [tabParam]);
 
   // Función para cambiar a la pestaña de creación de eventos
-  const handleNewEvent = () => {
+  const handleNewEvent = useCallback(() => {
+    console.log("Cambiando a pestaña de creación");
     setActiveTab("create");
-  };
+    // Actualizamos también la URL
+    router.push('/dashboard?tab=create');
+  }, [router]);
 
   // Función para manejar creación exitosa de evento
   const handleEventCreated = () => {
@@ -62,6 +66,7 @@ export default function EventDashboard() {
 
     // Navegar a la pestaña de eventos
     setActiveTab("events");
+    router.push('/dashboard?tab=events');
   };
 
   // Función para ver los participantes de un evento
@@ -69,6 +74,7 @@ export default function EventDashboard() {
     setSelectedEvent(event);
     setSelectedEventId(eventId);
     setActiveTab("participants");
+    router.push('/dashboard?tab=participants');
   };
 
   return (
@@ -83,7 +89,10 @@ export default function EventDashboard() {
             <h1 className="text-lg font-semibold">Dashboard de Eventos</h1>
           </div>
           <div className="flex items-center gap-4">
-            <Button onClick={handleNewEvent}>
+            <Button
+              onClick={handleNewEvent}
+              className="bg-primary hover:bg-primary/90"
+            >
               Crear Evento
             </Button>
           </div>
@@ -91,7 +100,10 @@ export default function EventDashboard() {
       </header>
 
       <main className="flex-1 container mx-auto pt-8 pb-10 px-4 sm:px-6">
-        <Tabs defaultValue="overview" value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+        <Tabs defaultValue="overview" value={activeTab} onValueChange={(value) => {
+          setActiveTab(value);
+          router.push(`/dashboard?tab=${value}`);
+        }} className="space-y-6">
           <TabsList className="bg-muted/50 p-1 rounded-xl">
             <TabsTrigger value="overview" className="rounded-lg">
               Resumen
@@ -196,7 +208,10 @@ export default function EventDashboard() {
                   </div>
                   <Button
                     variant="outline"
-                    onClick={() => setActiveTab("events")}
+                    onClick={() => {
+                      setActiveTab("events");
+                      router.push('/dashboard?tab=events');
+                    }}
                   >
                     Volver a Eventos
                   </Button>
