@@ -45,9 +45,9 @@ export default function Home() {
                 size="lg"
                 asChild
               >
-                <Link href="/dashboard">
+                <Link href="/dashboard?tab=create">
                   <Plus className="h-4 w-4 mr-2" />
-                  Gestionar eventos
+                  Crear evento
                 </Link>
               </Button>
             </div>
@@ -72,7 +72,7 @@ export default function Home() {
               <Link href="/dashboard" className="text-sm font-medium hover:text-primary transition-colors">
                 Dashboard
               </Link>
-              <Link href="/dashboard/create" className="text-sm font-medium hover:text-primary transition-colors">
+              <Link href="/dashboard?tab=create" className="text-sm font-medium hover:text-primary transition-colors">
                 Crear Evento
               </Link>
             </div>

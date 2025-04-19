@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -11,7 +12,10 @@ import { ParticipantsList } from "@/components/dashboard/ParticipantsList";
 import { ChevronLeft } from 'lucide-react';
 
 export default function EventDashboard() {
-  const [activeTab, setActiveTab] = useState("overview");
+  const searchParams = useSearchParams();
+  const tabParam = searchParams.get('tab');
+
+  const [activeTab, setActiveTab] = useState(tabParam || "overview");
   const [stats, setStats] = useState({
     totalEvents: 0,
     publishedEvents: 0,
@@ -38,6 +42,13 @@ export default function EventDashboard() {
   useEffect(() => {
     fetchStats();
   }, [eventsRefreshTrigger]);
+
+  // Efecto para actualizar la pestaña cuando cambia el parámetro de URL
+  useEffect(() => {
+    if (tabParam && ['overview', 'events', 'create', 'participants'].includes(tabParam)) {
+      setActiveTab(tabParam);
+    }
+  }, [tabParam]);
 
   // Función para cambiar a la pestaña de creación de eventos
   const handleNewEvent = () => {
