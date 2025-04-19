@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Button } from "@/components/ui/button";
 import { EventsDataComponent } from "@/components/EventsDataComponent";
-import { CalendarDays, MapPin, Search, TicketIcon, Plus, Clock, Users, ArrowRight } from 'lucide-react';
+import { CalendarDays, MapPin, Search, TicketIcon, Clock, Users, ArrowRight } from 'lucide-react';
 
 export default function Home() {
   return (
@@ -39,24 +39,13 @@ export default function Home() {
                   Explorar eventos
                 </Link>
               </Button>
-              <Button
-                variant="outline"
-                className="border-white text-white hover:bg-white/10 rounded-full text-sm px-6 h-12"
-                size="lg"
-                asChild
-              >
-                <Link href="/dashboard?tab=create">
-                  <Plus className="h-4 w-4 mr-2" />
-                  Crear evento
-                </Link>
-              </Button>
             </div>
           </div>
         </div>
       </section>
 
       {/* Navigation */}
-      <nav className="sticky top-0 z-40 w-full bg-white/80 dark:bg-zinc-950/80 backdrop-blur-lg border-b border-zinc-200 dark:border-zinc-800">
+      <header className="w-full bg-white/80 dark:bg-zinc-950/80 backdrop-blur-lg border-b border-zinc-200 dark:border-zinc-800">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
             <div className="flex items-center">
@@ -72,9 +61,6 @@ export default function Home() {
               <Link href="/dashboard" className="text-sm font-medium hover:text-primary transition-colors">
                 Dashboard
               </Link>
-              <Link href="/dashboard?tab=create" className="text-sm font-medium hover:text-primary transition-colors">
-                Crear Evento
-              </Link>
             </div>
 
             <div className="flex items-center">
@@ -86,7 +72,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </nav>
+      </header>
 
       {/* Why Evaniie Section */}
       <section className="py-16 container mx-auto px-4 sm:px-6 lg:px-8">
