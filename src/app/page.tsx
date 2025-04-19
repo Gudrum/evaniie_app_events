@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Button } from "@/components/ui/button";
 import { EventsDataComponent } from "@/components/EventsDataComponent";
-import { CalendarDays, MapPin, Search, TicketIcon } from 'lucide-react';
+import { CalendarDays, MapPin, Search, TicketIcon, Plus, Clock, Users, ArrowRight } from 'lucide-react';
 
 export default function Home() {
   return (
@@ -21,28 +21,34 @@ export default function Home() {
         <div className="container relative z-20 mx-auto px-4 py-24 sm:px-6 lg:px-8">
           <div className="max-w-4xl">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight mb-6">
-              Descubre la mejor cultura
-              <span className="block text-primary">en tu ciudad.</span>
+              Descubre los mejores
+              <span className="block text-primary">eventos con Evaniie.</span>
             </h1>
             <p className="text-zinc-200 text-lg sm:text-xl mb-8 max-w-2xl">
-              Desde conciertos y exposiciones de arte hasta batallas de hip hop y talleres de graffiti.
-              Una plataforma para los verdaderos amantes de la cultura.
+              Desde conciertos y exposiciones hasta talleres y conferencias.
+              Organiza, gestiona y participa en eventos fascinantes.
             </p>
             <div className="flex flex-wrap gap-4">
               <Button
                 className="bg-white text-black hover:bg-white/90 rounded-full text-sm px-6 h-12"
                 size="lg"
+                asChild
               >
-                <Search className="h-4 w-4 mr-2" />
-                Explorar eventos
+                <Link href="/eventos">
+                  <Search className="h-4 w-4 mr-2" />
+                  Explorar eventos
+                </Link>
               </Button>
               <Button
                 variant="outline"
                 className="border-white text-white hover:bg-white/10 rounded-full text-sm px-6 h-12"
                 size="lg"
+                asChild
               >
-                <TicketIcon className="h-4 w-4 mr-2" />
-                Crear evento
+                <Link href="/dashboard">
+                  <Plus className="h-4 w-4 mr-2" />
+                  Gestionar eventos
+                </Link>
               </Button>
             </div>
           </div>
@@ -55,37 +61,78 @@ export default function Home() {
           <div className="flex h-16 items-center justify-between">
             <div className="flex items-center">
               <Link href="/" className="flex items-center">
-                <span className="text-lg font-semibold tracking-tight">Cultura</span>
+                <span className="text-lg font-semibold tracking-tight">Evaniie</span>
               </Link>
             </div>
 
             <div className="hidden md:flex md:items-center md:space-x-8">
-              <Link href="#" className="text-sm font-medium hover:text-primary transition-colors">
+              <Link href="/eventos" className="text-sm font-medium hover:text-primary transition-colors">
                 Eventos
               </Link>
-              <Link href="#" className="text-sm font-medium hover:text-primary transition-colors">
-                Categorías
+              <Link href="/dashboard" className="text-sm font-medium hover:text-primary transition-colors">
+                Dashboard
               </Link>
-              <Link href="#" className="text-sm font-medium hover:text-primary transition-colors">
-                Crear
-              </Link>
-              <Link href="#" className="text-sm font-medium hover:text-primary transition-colors">
-                Perfil
+              <Link href="/dashboard/create" className="text-sm font-medium hover:text-primary transition-colors">
+                Crear Evento
               </Link>
             </div>
 
             <div className="flex items-center">
-              <Button className="rounded-full bg-black text-white hover:bg-black/90 dark:bg-white dark:text-black dark:hover:bg-white/90">
-                Iniciar sesión
+              <Button className="rounded-full bg-black text-white hover:bg-black/90 dark:bg-white dark:text-black dark:hover:bg-white/90" asChild>
+                <Link href="/dashboard">
+                  Gestionar Eventos
+                </Link>
               </Button>
             </div>
           </div>
         </div>
       </nav>
 
+      {/* Why Evaniie Section */}
+      <section className="py-16 container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-medium mb-4">¿Por qué usar Evaniie?</h2>
+          <p className="text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto">
+            Plataforma integral para la gestión de eventos, desde la creación hasta la gestión de asistentes
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-8">
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl p-6 shadow-sm">
+            <div className="w-12 h-12 bg-primary/10 dark:bg-primary/20 rounded-full flex items-center justify-center mb-4">
+              <Clock className="h-6 w-6 text-primary" />
+            </div>
+            <h3 className="text-xl font-medium mb-2">Fácil de Usar</h3>
+            <p className="text-zinc-600 dark:text-zinc-400">
+              Interfaz intuitiva que permite crear y gestionar eventos en minutos, sin complicaciones técnicas.
+            </p>
+          </div>
+
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl p-6 shadow-sm">
+            <div className="w-12 h-12 bg-primary/10 dark:bg-primary/20 rounded-full flex items-center justify-center mb-4">
+              <Users className="h-6 w-6 text-primary" />
+            </div>
+            <h3 className="text-xl font-medium mb-2">Gestión de Participantes</h3>
+            <p className="text-zinc-600 dark:text-zinc-400">
+              Controla las inscripciones, confirma asistentes y comunícate con los participantes fácilmente.
+            </p>
+          </div>
+
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl p-6 shadow-sm">
+            <div className="w-12 h-12 bg-primary/10 dark:bg-primary/20 rounded-full flex items-center justify-center mb-4">
+              <TicketIcon className="h-6 w-6 text-primary" />
+            </div>
+            <h3 className="text-xl font-medium mb-2">Publicación Instantánea</h3>
+            <p className="text-zinc-600 dark:text-zinc-400">
+              Publica tus eventos para que sean visibles inmediatamente y alcanza a más participantes.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Feature Categories */}
       <section className="py-16 container mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-4xl font-medium mb-8">Categorías para explorar</h2>
+        <h2 className="text-3xl md:text-4xl font-medium mb-8">Categorías para explorar</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <CategoryCard
             name="Conciertos"
@@ -112,6 +159,15 @@ export default function Home() {
 
       {/* Main Events Section */}
       <section className="py-16 container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center mb-10">
+          <h2 className="text-3xl md:text-4xl font-medium">Eventos disponibles</h2>
+          <Button variant="outline" className="gap-2 rounded-full" asChild>
+            <Link href="/eventos">
+              Ver todos
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </Button>
+        </div>
         <EventsDataComponent />
       </section>
 
@@ -122,7 +178,7 @@ export default function Home() {
             <div>
               <h2 className="text-3xl font-medium mb-6">Eventos en tu ciudad</h2>
               <p className="text-zinc-600 dark:text-zinc-300 mb-8">
-                Descubre los mejores eventos culturales cerca de ti. Desde conciertos
+                Descubre los mejores eventos cerca de ti. Desde conciertos
                 hasta exposiciones, siempre tendrás algo que hacer en tu ciudad.
               </p>
               <div className="flex items-center text-zinc-700 dark:text-zinc-300 text-sm">
@@ -145,9 +201,9 @@ export default function Home() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-              <h3 className="font-semibold mb-4">Cultura</h3>
+              <h3 className="font-semibold mb-4">Evaniie</h3>
               <p className="text-zinc-600 dark:text-zinc-400 text-sm">
-                La plataforma para conectar a los amantes de la cultura con eventos emocionantes.
+                La plataforma para conectar a las personas con eventos emocionantes y gestionar la organización de forma sencilla.
               </p>
             </div>
             <div>
@@ -181,7 +237,7 @@ export default function Home() {
           </div>
           <div className="border-t border-zinc-200 dark:border-zinc-800 mt-8 pt-8 flex flex-col sm:flex-row justify-between items-center">
             <p className="text-sm text-zinc-500 dark:text-zinc-400">
-              © 2025 Cultura. Todos los derechos reservados.
+              © 2025 Evaniie. Todos los derechos reservados.
             </p>
             <div className="flex space-x-6 mt-4 sm:mt-0">
               <Link href="#" className="text-zinc-500 hover:text-primary dark:text-zinc-400 dark:hover:text-primary">
